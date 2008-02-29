@@ -1,0 +1,6 @@
+= ProtoPanel
+=== Dead simple panel navigation with Prototype.js
+
+ProtoPanel provides tools for creating panel-based interfaces
+with anchor-based navigation (so as not to break back buttons) 
+as well as a host of other goodies.
