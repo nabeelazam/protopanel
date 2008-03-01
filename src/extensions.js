@@ -32,6 +32,8 @@ Object.extend(document, {
   delegators: Event.delegators
 })
 
+
+// Element extensions for Panels
 Object.extend(ProtoPanel, {
   Extensions: {
     activate: function(element) {
@@ -50,34 +52,3 @@ Object.extend(ProtoPanel, {
 });
 
 Element.addMethods(ProtoPanel.Extensions);
-
-var HistoryBuddy = {
-  lashHash: '',
-  
-  start: function() {
-    HistoryBuddy.lastHash = HistoryBuddy.currentHash();
-    new PeriodicalExecuter(HistoryBuddy.check, 0.2);
-  },
-  
-  check: function(executer) {
-    if ( HistoryBuddy.isNewHash() ) {
-      var hash = HistoryBuddy.currentHash();
-      document.panelManager.activate(hash);
-      executer.stop();
-      HistoryBuddy.start();
-    }
-  },
-  
-  currentHash: function() {
-    return window.location.href.split('#')[1];
-  },
-  
-  isNewHash: function() {
-    return HistoryBuddy.lastHash != HistoryBuddy.currentHash();
-  }
-}
-
-Event.observe(document, 'dom:loaded', function() {
-  HistoryBuddy.start();  
-})
-

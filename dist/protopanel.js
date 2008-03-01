@@ -45,6 +45,8 @@ Object.extend(document, {
   delegators: Event.delegators
 })
 
+
+// Element extensions for Panels
 Object.extend(ProtoPanel, {
   Extensions: {
     activate: function(element) {
@@ -63,36 +65,6 @@ Object.extend(ProtoPanel, {
 });
 
 Element.addMethods(ProtoPanel.Extensions);
-
-var HistoryBuddy = {
-  lashHash: '',
-
-  start: function() {
-    HistoryBuddy.lastHash = HistoryBuddy.currentHash();
-    new PeriodicalExecuter(HistoryBuddy.check, 0.2);
-  },
-
-  check: function(executer) {
-    if ( HistoryBuddy.isNewHash() ) {
-      var hash = HistoryBuddy.currentHash();
-      document.panelManager.activate(hash);
-      executer.stop();
-      HistoryBuddy.start();
-    }
-  },
-
-  currentHash: function() {
-    return window.location.href.split('#')[1];
-  },
-
-  isNewHash: function() {
-    return HistoryBuddy.lastHash != HistoryBuddy.currentHash();
-  }
-}
-
-Event.observe(document, 'dom:loaded', function() {
-  HistoryBuddy.start();
-})
 
 Object.extend(ProtoPanel, {
   Controls: {
@@ -180,4 +152,38 @@ Event.observe(document, 'dom:loaded', function() {
     document.panelManager.goBack();
     event.stop();
   })
+})
+
+// Allows anchor-based navigation (including back-button compatibility)
+// by using a PeriodicalExecuter to check the URL's hash component against
+// a cached version. If there's a difference, the active panel is updated
+// using the new URL hash component.
+var HistoryManager = {
+  lastHash: '',
+
+  start: function() {
+    HistoryManager.lastHash = HistoryManager.currentHash();
+    new PeriodicalExecuter(HistoryManager.check, 0.2);
+  },
+
+  check: function(executer) {
+    if ( HistoryManager.isNewHash() ) {
+      var hash = HistoryManager.currentHash();
+      document.panelManager.activate(hash);
+      executer.stop();
+      HistoryManager.start();
+    }
+  },
+
+  currentHash: function() {
+    return window.location.href.split('#')[1];
+  },
+
+  isNewHash: function() {
+    return HistoryManager.lastHash != HistoryManager.currentHash();
+  }
+}
+
+Event.observe(document, 'dom:loaded', function() {
+  HistoryManager.start();
 })
