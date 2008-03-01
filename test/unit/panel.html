@@ -36,6 +36,13 @@
   </div>
 </div>
 
+<div id="controls">
+  <a href="#nouns">Show Nouns</a>
+  <a href="#verbs">Show Verbs</a>
+  <a href="#adjectives">Show Adjectives</a>
+  <a href="#adverbs">Show Adverbs</a>
+</div>
+
 <div id='elementToViewportDimensions' style='display: none'></div>
 
 <!-- Tests follow -->
@@ -47,14 +54,20 @@
       ProtoPanel.setup();
     }},
     
-    testSetupManager: function() { with(this) {
-      assertNotUndefined(document.panelManager, "Didn't instantiate panel manager and assign to document.");
-      assertInstanceOf(ProtoPanel.Manager, document.panelManager)
+    testShouldHaveControlId: function() { with(this) {
+      var panel = document.panelManager.panels[0];
+      assertNotUndefined(panel.controlId, "Didn't assign controlId to panel.")
     }},
     
-    testManagerShouldGetPanels: function() { with(this) {
-      assertEqual(4, document.panelManager.panels.length)
-      assertInstanceOf(ProtoPanel.Panel, document.panelManager.panels[0])
+    testInactivePanelShouldntBeVisible: function() { with(this) {
+      var panel = document.panelManager.panels[0];
+      assertHidden(panel);
+    }},
+    
+    testActivePanelShouldBeVisible: function() { with(this) {
+      var panel = document.panelManager.panels[0];
+      panel.activate();
+      assertVisible(panel);
     }},
   })
   

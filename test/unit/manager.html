@@ -26,7 +26,7 @@
     Nouns go here
   </div>
   <div id="verbs" class="panel">
-    Verb go here
+    Verbs go here
   </div>
   <div id="adjectives" class="panel">
     Adjectives go here
@@ -34,6 +34,14 @@
   <div id="adverbs" class="panel">
     Adverbs (such as "well") go here
   </div>
+</div>
+
+<div id="controls">
+  <a href="#nouns">Show Nouns</a>
+  <a href="#verbs">Show Verbs</a>
+  <a href="#adjectives">Show Adjectives</a>
+  <a href="#adverbs">Show Adverbs</a>
+  <a href="#back" id="back">Go Back</a>
 </div>
 
 <div id='elementToViewportDimensions' style='display: none'></div>
@@ -44,17 +52,62 @@
 
   new Test.Unit.Runner({
     setup: function() { with(this) {
-      ProtoPanel.setup();
+      ProtoPanel.clobber();
     }},
     
     testSetupManager: function() { with(this) {
+      ProtoPanel.setup();
       assertNotUndefined(document.panelManager, "Didn't instantiate panel manager and assign to document.");
       assertInstanceOf(ProtoPanel.Manager, document.panelManager)
     }},
     
     testManagerShouldGetPanels: function() { with(this) {
+      ProtoPanel.setup();
       assertEqual(4, document.panelManager.panels.length)
-      assertInstanceOf(ProtoPanel.Panel, document.panelManager.panels[0])
+      assertInstanceOf(Element, document.panelManager.panels[0])
+    }},
+    
+    testShouldActivateElement: function() { with(this) {
+      ProtoPanel.setup();
+      var panel = document.panelManager.panels[2];
+      assert( !panel.isActive() );
+      document.panelManager.activate(panel);
+      assert( panel.isActive() );
+    }},
+    
+    testShouldNotActivateMultiplePanels: function() { with(this) {
+      ProtoPanel.setup();
+      var panel_1 = document.panelManager.panels[0];
+      var panel_2 = document.panelManager.panels[2];
+      document.panelManager.activate(panel_1);
+      assert( panel_1.isActive(), "Panel 1 not activated" );
+      assert( !panel_2.isActive(), "Panel 2 shouldn't be activated yet" );
+      document.panelManager.activate(panel_2);
+      assert( !panel_1.isActive(), "Panel 1 not deactivated" );
+      assert( panel_2.isActive(), "Panel 2 not activated" );
+    }},
+    
+    testShouldAllowCustomDefault: function() { with(this) {
+      ProtoPanel.setup({'default':'#nouns'});
+      var panel = document.panelManager.panels.last;
+      assertVisible(panel);
+    }},
+    
+    testShouldDefaultToLastPanel: function() { with(this) {
+      ProtoPanel.setup();
+      var panel = $('adverbs');
+      assert(panel.isActive());
+      assertVisible(panel);
+    }},
+    
+    testShouldGoBack: function() { with(this) {
+      ProtoPanel.setup();
+      var panel_1 = $('verbs');
+      var panel_2 = $('nouns');
+      panel_1.activate();
+      panel_2.activate();
+      document.panelManager.goBack();
+      assert(panel_1.isActive());
     }},
   })
   

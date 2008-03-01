@@ -3,6 +3,10 @@ body, div, p, h1, h2, h3, ul, ol, span, a, table, td, form, img, li {
   font-family: sans-serif;
 }
 
+a {
+  color: blue;
+}
+
 body {
   font-size:0.8em;
 }
