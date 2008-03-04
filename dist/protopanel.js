@@ -2,7 +2,6 @@
  *  (c) 2008 Pat Nakajima
  *
  *  Protopanel is freely distributable under the terms of an MIT-style license.
- *  For details, see the Prototype web site: http://www.prototypejs.org/
  *
  *--------------------------------------------------------------------------*/
 

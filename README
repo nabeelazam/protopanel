@@ -4,3 +4,42 @@
 ProtoPanel provides tools for creating panel-based interfaces
 with anchor-based navigation (so as not to break back buttons) 
 as well as a host of other goodies.
+
+=== Usage
+
+Create your panels. By default, ProtoPanel identifies any <div>
+element with the class name "panel" as a panel, though you can
+specify a different selector if you wish. Note that your panels
+must have an #id attribute. Once you've created your panels,
+create controls for your them. Panel controls are just link
+elements those href attributes point to a panel, like so:
+
+  <div id="somePanel" class="panel">
+    Some panel content
+  </div>
+  
+  <a href="#somePanel">This is a panel control</a>
+
+Now that you have the proper markup in place, you need to setup
+the panel manager. To do so, use the following line:
+  
+  ProtoPanel.setup();
+
+The #setup() method can take a bunch of options, which I'll document
+at a later time. For the time being though, we'll just use defaults.
+
+Now that the manager is setup, your panels should be working. By
+default, the last panel is activated, though if there's a different
+one specified in the URL, that will be activated instead.
+
+More docs to come later...
+
+TODO
+====
+
+* More documentation.
+* Transition effects for panel switches.
+* More tests.
+  
+
+Copyright (c) 2008 Pat Nakajima, released under the MIT license
